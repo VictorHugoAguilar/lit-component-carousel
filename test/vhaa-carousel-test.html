@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes" />
+
+        <title>Carousel Test</title>
+
+        <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+        <script src="../node_modules/wct-browser-legacy/browser.js"></script>
+
+        <script src="../index.js" type="module"></script>
+    </head>
+    <body>
+        <test-fixture id="BasicTestFixture">
+            <template>
+                <vhaa-carousel>
+                    <img name="test_1" src="./assets/test_1.jpg" />
+                    <img name="test_2" src="./assets/test_2.jpg" />
+                    <img name="test_3" src="./assets/test_3.jpg" />
+                </vhaa-carousel>
+            </template>
+        </test-fixture>
+
+        <script>
+            suite("Set components with varius images", () => {
+                suite("when load the component", () => {
+                    let myEle, dpStub;
+
+                    setup(() => {
+                        myEle = fixture("BasicTestFixture");
+                    });
+
+                    teardown(() => {});
+
+                    test("check that exist a first img select, and previus is undefined", (done) => {
+                        const elementShadowRoot = myEle.shadowRoot;
+                        flush(() => {
+                            const slot_selected_default = elementShadowRoot.querySelector("slot[name=selected]");
+                            expect(slot_selected_default.assignedNodes({ flatten: true })[0].name).equals("test_1");
+
+                            const slot_undefined = elementShadowRoot.querySelector("slot[name=previous]");
+                            expect(slot_undefined.assignedNodes({ flatten: true })).to.be.empty;
+
+                            done();
+                        });
+                    });
+
+                    test("check that after clicking the next image is selected and there is a previous one", (done) => {
+                        const elementShadowRoot = myEle.shadowRoot;
+                        const callback = sinon.spy();
+                        myEle.addEventListener("change", callback);
+
+                        flush(() => {
+                            const elementHeader = elementShadowRoot.querySelector("div");
+                            const eventClick = new Event("click", {
+                                bubbles: true,
+                                cancelable: true,
+                            });
+                            elementHeader.dispatchEvent(eventClick);
+                            expect(callback).called;
+                        });
+
+                        flush(() => {
+                            const slot_selected_default = elementShadowRoot.querySelector("slot[name=selected]");
+                            expect(slot_selected_default.assignedNodes({ flatten: true })[0].name).equals("test_2");
+
+                            const slot_undefined = elementShadowRoot.querySelector("slot[name=previous]");
+                            expect(slot_undefined.assignedNodes({ flatten: true })[0].name).equals("test_1");
+
+                            done();
+                        });
+                    });
+                });
+            });
+        </script>
+    </body>
+</html>

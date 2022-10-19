@@ -1,0 +1,31 @@
+{
+    "name": "vhaa-carousel",
+    "version": "1.0.0",
+    "description": "Carousel",
+    "main": "index.js",
+    "scripts": {
+        "demo": "polymer serve",
+        "test": "polymer test -l chrome"
+    },
+    "author": "Victor Hugo Aguilar Aguilar",
+    "license": "MIT",
+    "dependencies": {
+        "@lit-labs/motion": "^1.0.3",
+        "@polymer/test-fixture": "^4.0.2",
+        "async": "^1.5.2",
+        "lit-element": "^3.2.2"
+    },
+    "devDependencies": {
+        "@webcomponents/webcomponentsjs": "^2.2.10",
+        "wct-browser-legacy": "^1.0.2"
+    },
+    "keywords": [
+        "webcomponents",
+        "javascript",
+        "litelement"
+    ],
+    "directories": {
+        "test": "test",
+        "demo": "demo"
+    }
+}

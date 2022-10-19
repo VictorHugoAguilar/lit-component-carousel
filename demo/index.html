@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>VHAA - Carousel</title>
+    </head>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: sans-serif;
+        }
+
+        #carousel {
+            width: 200px;
+            height: 200px;
+            user-select: none;
+        }
+
+        #carousel:not(:defined) > * {
+            display: none;
+        }
+    </style>
+    <body>
+        <h4>Demo Carousel</h4>
+        <vhaa-carousel id="carousel">
+            <img src="https://picsum.photos/seed/1/200" />
+            <img src="https://picsum.photos/seed/2/200" />
+            <img src="https://picsum.photos/seed/3/200" />
+            <img src="https://picsum.photos/seed/4/200" />
+            <img src="https://picsum.photos/seed/5/200" />
+            <img src="https://picsum.photos/seed/6/200" />
+            <img src="https://picsum.photos/seed/7/200" />
+        </vhaa-carousel>
+
+        <script src="../../../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+        <script src="../index.js" type="module"></script>
+    </body>
+</html>
