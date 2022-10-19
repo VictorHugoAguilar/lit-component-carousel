@@ -24,26 +24,51 @@
 
         <script>
             suite("Set components with varius images", () => {
-                suite("when load the component", () => {
-                    let myEle, dpStub;
+                let myEle;
 
-                    setup(() => {
-                        myEle = fixture("BasicTestFixture");
+                setup(() => {
+                    myEle = fixture("BasicTestFixture");
+                });
+
+                const _checkResult = (done, selected, previous = undefined) => {
+                    const elementShadowRoot = myEle.shadowRoot;
+
+                    flush(() => {
+                        const slot_selected_default = elementShadowRoot.querySelector("slot[name=selected]");
+                        expect(slot_selected_default.assignedNodes({ flatten: true })[0].name).equals(selected);
+
+                        const slot_undefined = elementShadowRoot.querySelector("slot[name=previous]");
+                        if (previous) {
+                            expect(slot_undefined.assignedNodes({ flatten: true })[0].name).equals(previous);
+                        } else {
+                            expect(slot_undefined.assignedNodes({ flatten: true })).to.be.empty;
+                        }
+
+                        done();
                     });
+                };
 
-                    teardown(() => {});
+                suite("when load the component", () => {
+                    // let myEle;
+
+                    // setup(() => {
+                    //     myEle = fixture("BasicTestFixture");
+                    // });
+
+                    // teardown(() => {});
 
                     test("check that exist a first img select, and previus is undefined", (done) => {
-                        const elementShadowRoot = myEle.shadowRoot;
-                        flush(() => {
-                            const slot_selected_default = elementShadowRoot.querySelector("slot[name=selected]");
-                            expect(slot_selected_default.assignedNodes({ flatten: true })[0].name).equals("test_1");
+                        _checkResult(done, "test_1");
 
-                            const slot_undefined = elementShadowRoot.querySelector("slot[name=previous]");
-                            expect(slot_undefined.assignedNodes({ flatten: true })).to.be.empty;
+                        // flush(() => {
+                        //     const slot_selected_default = elementShadowRoot.querySelector("slot[name=selected]");
+                        //     expect(slot_selected_default.assignedNodes({ flatten: true })[0].name).equals("test_1");
 
-                            done();
-                        });
+                        //     const slot_undefined = elementShadowRoot.querySelector("slot[name=previous]");
+                        //     expect(slot_undefined.assignedNodes({ flatten: true })).to.be.empty;
+
+                        //     done();
+                        // });
                     });
 
                     test("check that after clicking the next image is selected and there is a previous one", (done) => {
@@ -61,15 +86,69 @@
                             expect(callback).called;
                         });
 
+                        _checkResult(done, "test_2", "test_1");
+
+                        // flush(() => {
+                        //     const slot_selected_default = elementShadowRoot.querySelector("slot[name=selected]");
+                        //     expect(slot_selected_default.assignedNodes({ flatten: true })[0].name).equals("test_2");
+
+                        //     const slot_undefined = elementShadowRoot.querySelector("slot[name=previous]");
+                        //     expect(slot_undefined.assignedNodes({ flatten: true })[0].name).equals("test_1");
+
+                        //     done();
+                        // });
+                    });
+                });
+
+                suite("but when the second image is selected we go back", () => {
+
+                    setup(()=>{
+                        myEle.selected = 1;
+                    })
+
+                    test("check that second img select, and previus is undefined", (done) => {
+                        _checkResult(done, "test_2");
+
+                        // const elementShadowRoot = myEle.shadowRoot;
+                        // flush(() => {
+                        //     const slot_selected_default = elementShadowRoot.querySelector("slot[name=selected]");
+                        //     expect(slot_selected_default.assignedNodes({ flatten: true })[0].name).equals("test_2");
+
+                        //     const slot_undefined = elementShadowRoot.querySelector("slot[name=previous]");
+                        //     expect(slot_undefined.assignedNodes({ flatten: true })).to.be.empty;
+
+                        //     done();
+                        // });
+                    });
+
+                    test("check that when clicking with shift pressed we return to the previous image", (done) => {
+                        const elementShadowRoot = myEle.shadowRoot;
+                        const callback = sinon.spy();
+                        myEle.addEventListener("change", callback);
+
                         flush(() => {
-                            const slot_selected_default = elementShadowRoot.querySelector("slot[name=selected]");
-                            expect(slot_selected_default.assignedNodes({ flatten: true })[0].name).equals("test_2");
-
-                            const slot_undefined = elementShadowRoot.querySelector("slot[name=previous]");
-                            expect(slot_undefined.assignedNodes({ flatten: true })[0].name).equals("test_1");
-
-                            done();
+                            const elementHeader = elementShadowRoot.querySelector("div");
+                            const eventClick = new PointerEvent("click", {
+                                bubbles: true,
+                                cancelable: true,
+                                shiftKey: true,
+                            });
+                            console.log(eventClick);
+                            elementHeader.dispatchEvent(eventClick);
+                            expect(callback).called;
                         });
+
+                        _checkResult(done, "test_1", "test_2");
+
+                        // flush(() => {
+                        //     const slot_selected_default = elementShadowRoot.querySelector("slot[name=selected]");
+                        //     expect(slot_selected_default.assignedNodes({ flatten: true })[0].name).equals("test_1");
+
+                        //     const slot_undefined = elementShadowRoot.querySelector("slot[name=previous]");
+                        //     expect(slot_undefined.assignedNodes({ flatten: true })[0].name).equals("test_2");
+
+                        //     done();
+                        // });
                     });
                 });
             });
