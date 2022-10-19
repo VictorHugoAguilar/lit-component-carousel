@@ -43,32 +43,13 @@
                         } else {
                             expect(slot_undefined.assignedNodes({ flatten: true })).to.be.empty;
                         }
-
                         done();
                     });
                 };
 
                 suite("when load the component", () => {
-                    // let myEle;
-
-                    // setup(() => {
-                    //     myEle = fixture("BasicTestFixture");
-                    // });
-
-                    // teardown(() => {});
-
                     test("check that exist a first img select, and previus is undefined", (done) => {
                         _checkResult(done, "test_1");
-
-                        // flush(() => {
-                        //     const slot_selected_default = elementShadowRoot.querySelector("slot[name=selected]");
-                        //     expect(slot_selected_default.assignedNodes({ flatten: true })[0].name).equals("test_1");
-
-                        //     const slot_undefined = elementShadowRoot.querySelector("slot[name=previous]");
-                        //     expect(slot_undefined.assignedNodes({ flatten: true })).to.be.empty;
-
-                        //     done();
-                        // });
                     });
 
                     test("check that after clicking the next image is selected and there is a previous one", (done) => {
@@ -87,38 +68,16 @@
                         });
 
                         _checkResult(done, "test_2", "test_1");
-
-                        // flush(() => {
-                        //     const slot_selected_default = elementShadowRoot.querySelector("slot[name=selected]");
-                        //     expect(slot_selected_default.assignedNodes({ flatten: true })[0].name).equals("test_2");
-
-                        //     const slot_undefined = elementShadowRoot.querySelector("slot[name=previous]");
-                        //     expect(slot_undefined.assignedNodes({ flatten: true })[0].name).equals("test_1");
-
-                        //     done();
-                        // });
                     });
                 });
 
                 suite("but when the second image is selected we go back", () => {
-
-                    setup(()=>{
+                    setup(() => {
                         myEle.selected = 1;
-                    })
+                    });
 
                     test("check that second img select, and previus is undefined", (done) => {
                         _checkResult(done, "test_2");
-
-                        // const elementShadowRoot = myEle.shadowRoot;
-                        // flush(() => {
-                        //     const slot_selected_default = elementShadowRoot.querySelector("slot[name=selected]");
-                        //     expect(slot_selected_default.assignedNodes({ flatten: true })[0].name).equals("test_2");
-
-                        //     const slot_undefined = elementShadowRoot.querySelector("slot[name=previous]");
-                        //     expect(slot_undefined.assignedNodes({ flatten: true })).to.be.empty;
-
-                        //     done();
-                        // });
                     });
 
                     test("check that when clicking with shift pressed we return to the previous image", (done) => {
@@ -139,16 +98,6 @@
                         });
 
                         _checkResult(done, "test_1", "test_2");
-
-                        // flush(() => {
-                        //     const slot_selected_default = elementShadowRoot.querySelector("slot[name=selected]");
-                        //     expect(slot_selected_default.assignedNodes({ flatten: true })[0].name).equals("test_1");
-
-                        //     const slot_undefined = elementShadowRoot.querySelector("slot[name=previous]");
-                        //     expect(slot_undefined.assignedNodes({ flatten: true })[0].name).equals("test_2");
-
-                        //     done();
-                        // });
                     });
                 });
             });
