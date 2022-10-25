@@ -1,2 +1,3 @@
-# lit-component-carousel
-Component Lit Carousel
+# Component Lit Carousel
+
+
